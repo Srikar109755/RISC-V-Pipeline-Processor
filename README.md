@@ -59,7 +59,7 @@ This pipeline uses direct architectural registers without any renaming.
 
 - Simulated multiple simple RISC-V instructions with different source and destination registers.
 
-[🔗 Go to Phase 1 Code Folder](./Phase1_Baseline_Pipeline/)
+[🔗 Go to Phase 1 Code Folder](https://github.com/Srikar109755/RISC-V-Pipeline-Processor/tree/main/CPU_Phase1_Baseline_Pipeline)
 
 ---
 
@@ -93,7 +93,7 @@ This phase forms the core of out-of-order backend rename stage.
 - Free list allocation with availability check
 - Fully functional testbench simulating multiple renaming scenarios
 
-[🔗 Go to Phase 2 Code Folder](./Phase2_Rename_Logic/)
+[🔗 Go to Phase 2 Code Folder](https://github.com/Srikar109755/RISC-V-Pipeline-Processor/tree/main/CPU_Phase2_Register_Renaming)
 
 ---
 
