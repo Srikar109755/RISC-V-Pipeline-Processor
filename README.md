@@ -6,12 +6,12 @@ Welcome to my full Verilog-based CPU backend project. This repository tracks my 
 
 ## 📑 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Phase 1: Baseline Pipeline](#phase-1-baseline-pipeline)
-- [Phase 2: Rename Logic & Free List](#phase-2-rename-logic--free-list)
-- [Future Phases (Planned)](#future-phases-planned)
-- [Tools Used](#tools-used)
-- [License](#license)
+- [🚀 Project Overview](#project-overview)
+- [⚙️ Phase 1: Baseline Pipeline](#phase-1-baseline-pipeline)
+- [⚙️ Phase 2: Rename Logic & Free List](#phase-2-rename-logic--free-list)
+- [🔮 Future Phases (Planned)](#future-phases-planned)
+- [🛠 Tools Used](#tools-used)
+- [📄 License](#license)
 
 ---
 
