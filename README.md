@@ -6,12 +6,12 @@ Welcome to my full Verilog-based CPU backend project. This repository tracks my 
 
 ## 📑 Table of Contents
 
-- [🚀 Project Overview](#project-overview)
-- [⚙️ Phase 1: Baseline Pipeline](#phase-1-baseline-pipeline)
-- [⚙️ Phase 2: Rename Logic & Free List](#phase-2-rename-logic--free-list)
-- [🔮 Future Phases (Planned)](#future-phases-planned)
-- [🛠 Tools Used](#tools-used)
-- [📄 License](#license)
+- [Project Overview](#project-overview)
+- [Phase 1: Baseline Pipeline](#phase-1-baseline-pipeline)
+- [Phase 2: Rename Logic & Free List](#phase-2-rename-logic--free-list)
+- [Future Phases (Planned)](#future-phases-planned)
+- [Tools Used](#tools-used)
+- [License](#license)
 
 ---
 
@@ -30,7 +30,7 @@ Each phase is stored in its own directory inside this repository.
 
 ---
 
-## ⚙️ Phase 1: Baseline Pipeline
+## Phase 1: Baseline Pipeline
 
 ### ✅ Description
 
@@ -63,7 +63,7 @@ This pipeline uses direct architectural registers without any renaming.
 
 ---
 
-## ⚙️ Phase 2: Rename Logic & Free List
+## Phase 2: Rename Logic & Free List
 
 ### ✅ Description
 
@@ -97,7 +97,7 @@ This phase forms the core of out-of-order backend rename stage.
 
 ---
 
-## 🔮 Future Phases (Planned)
+## Future Phases (Planned)
 
 | Phase | Description | Status |
 |-------|-------------|--------|
@@ -107,7 +107,7 @@ This phase forms the core of out-of-order backend rename stage.
 
 ---
 
-## 🛠 Tools Used
+## Tools Used
 
 - Language: Verilog HDL
 - Simulation: ModelSim / Vivado / Icarus Verilog
@@ -115,9 +115,6 @@ This phase forms the core of out-of-order backend rename stage.
 
 ---
 
-## 📄 License
+## License
 
 This project is open-source for educational and personal learning purposes.
-
----
-
