@@ -10,6 +10,7 @@ Welcome to my full Verilog-based CPU backend project. This repository tracks my 
 - [Phase 1: Baseline Pipeline](#phase-1-baseline-pipeline)
 - [Phase 2: Rename Logic & Free List](#phase-2-rename-logic--free-list)
 - [Phase 3: Reservation Stations, Execution Unit, and CDB](#phase-3-reservation-stations-execution-unit-and-cdb)
+- [Phase 4: Reorder Buffer (ROB) and Commit](#phase-4-reorder-buffer-rob-and-commit)
 - [Future Phases (Planned)](#future-phases-planned)
 - [Tools Used](#tools-used)
 - [License](#license)
@@ -25,8 +26,9 @@ This project simulates the backend pipeline stages of a CPU using Verilog HDL, s
 - Free list management
 - Reservation stations
 - Common Data Bus (CDB)
+- Reorder buffer with precise commit and recovery
 - Out-of-order execution model
-- Issue queue and reorder buffer (future phases)
+- Issue queue and recovery mechanisms (future phases)
 
 Each phase is stored in its own directory inside this repository.
 
@@ -129,13 +131,45 @@ In Phase 3, I built a simplified Out-of-Order issue and execution model, introdu
 
 ---
 
+## Phase 4: Reorder Buffer (ROB) and Commit
+
+### ✅ Description
+
+In Phase 4, I implemented a **Reorder Buffer (ROB)** to support **in-order retirement** of instructions that execute out-of-order. This enables correct architectural state updates, branch recovery, and precise exception handling.
+
+Key modules introduced:
+
+- **Reorder_Buffer** — holds instruction metadata until results are ready and committed in-order.
+- **Commit_Unit** — writes final results to the architectural register file once instructions reach the ROB head and are marked ready.
+- **Recovery_Logic** — detects branch misprediction, issues flush, and resets ROB state based on `recover_ptr`.
+
+### ✅ Module Structure
+
+- `Reorder_Buffer.v` — manages ROB entries, commit order, and flush-on-mispredict
+- `Commit_Unit.v` — performs architectural register writes for committed instructions
+- `Recovery_Logic.v` — generates recovery signals and `recover_ptr` on branch misprediction
+- `Top_Phase4.v` — integrates ROB, commit, and recovery
+- `Testbench_Phase4.v` — includes multiple allocation, execution, and recovery scenarios
+
+### ✅ Key Features
+
+- Full circular buffer management using `head`, `tail`, `valid`, `ready`, and `empty/full` flags
+- CDB-based result collection and readiness update
+- In-order commit enforcement and physical register release signaling
+- Flush logic for misprediction recovery with pointer rollback
+- Comprehensive simulation validating proper commit and flush behavior
+
+[🔗 Go to Phase 4 Code Folder](https://github.com/Srikar109755/RISC-V-Pipeline-Processor/tree/main/CPU_Phase4_Reorder_Buffer)
+
+---
+
 ## Future Phases (Planned)
 
-| Phase | Description | Status |
-|-------|-------------|--------|
-| Phase 4 | Reorder Buffer (ROB) | 🔜 Planned |
-| Phase 5 | Full Issue Queue + Multi-Issue Backend | 🔜 Planned |
-| Phase 6 | Full Superscalar Out-of-Order CPU | 🔜 Planned |
+| Phase    | Description                              | Status     |
+|----------|------------------------------------------|------------|
+| Phase 5  | Full Issue Queue + Multi-Issue Backend   | 🔜 Planned |
+| Phase 6  | Superscalar Out-of-Order CPU             | 🔜 Planned |
+| Phase 7  | Branch Predictor + BTB                   | 🔜 Planned |
 
 ---
 
