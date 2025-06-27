@@ -11,6 +11,7 @@ Welcome to my full Verilog-based CPU backend project. This repository tracks my 
 - [Phase 2: Rename Logic & Free List](#phase-2-rename-logic--free-list)
 - [Phase 3: Reservation Stations, Execution Unit, and CDB](#phase-3-reservation-stations-execution-unit-and-cdb)
 - [Phase 4: Reorder Buffer (ROB) and Commit](#phase-4-reorder-buffer-rob-and-commit)
+- [Phase 5: Branch Prediction and Speculative Control](#phase-5-branch-prediction-and-speculative-control)
 - [Future Phases (Planned)](#future-phases-planned)
 - [Tools Used](#tools-used)
 - [License](#license)
@@ -27,6 +28,7 @@ This project simulates the backend pipeline stages of a CPU using Verilog HDL, s
 - Reservation stations
 - Common Data Bus (CDB)
 - Reorder buffer with precise commit and recovery
+- Branch prediction and speculative control
 - Out-of-order execution model
 - Issue queue and recovery mechanisms (future phases)
 
@@ -163,13 +165,37 @@ Key modules introduced:
 
 ---
 
+## Phase 5: Branch Prediction and Speculative Control
+
+### ✅ Description
+
+In Phase 5, I added **branch prediction and speculative control logic** to allow the pipeline to guess branch directions early and recover from incorrect predictions. This improves instruction fetch throughput and prepares the design for out-of-order execution.
+
+### ✅ Key Components
+
+- `Branch_Predictor.v`: Implements a 2-bit saturating counter predictor indexed by bits of the PC.
+- `BTB.v`: A Branch Target Buffer (BTB) that caches previously seen branch targets.
+- `Speculation_Control.v`: Handles detection of mispredictions and issues `flush` and `recover_pc` signals.
+- `Top_Phase5.v`: Connects predictor, BTB, and speculative recovery into a unified prediction system.
+- `TB_Phase5.v`: Stimulates prediction, resolution, and recovery scenarios.
+
+### ✅ Key Features
+
+- Accurate taken/not-taken prediction based on local branch history.
+- Tag-based BTB lookup with prediction validation.
+- Full pipeline flush and PC redirection on misprediction.
+- Simulates prediction updates and target caching dynamically during execution.
+
+[🔗 Go to Phase 5 Code Folder](https://github.com/Srikar109755/RISC-V-Pipeline-Processor/tree/main/CPU_Phase5_Branch_Prediction)
+
+---
+
 ## Future Phases (Planned)
 
 | Phase    | Description                              | Status     |
 |----------|------------------------------------------|------------|
-| Phase 5  | Full Issue Queue + Multi-Issue Backend   | 🔜 Planned |
 | Phase 6  | Superscalar Out-of-Order CPU             | 🔜 Planned |
-| Phase 7  | Branch Predictor + BTB                   | 🔜 Planned |
+| Phase 7  | Full Issue Queue + Multi-Issue Backend   | 🔜 Planned |
 
 ---
 
