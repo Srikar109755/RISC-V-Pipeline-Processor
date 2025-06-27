@@ -56,7 +56,7 @@ This pipeline uses direct architectural registers without any renaming.
 - `Instruction_Fetch.v`
 - `Instruction_Decode.v`
 - `Register_File.v`
-- `ALU.v`
+- `Execution_Unit_ALU.v`
 - `Memory.v`
 - `Top_Phase1.v` (top module)
 - `Testbench_Phase1.v`
