@@ -12,6 +12,7 @@ Welcome to my full Verilog-based CPU backend project. This repository tracks my 
 - [Phase 3: Reservation Stations, Execution Unit, and CDB](#phase-3-reservation-stations-execution-unit-and-cdb)
 - [Phase 4: Reorder Buffer (ROB) and Commit](#phase-4-reorder-buffer-rob-and-commit)
 - [Phase 5: Branch Prediction and Speculative Control](#phase-5-branch-prediction-and-speculative-control)
+- [Phase 6: Instruction Wakeup + CDB Integration](#phase-6-instruction-wakeup--cdb-integration)
 - [Future Phases (Planned)](#future-phases-planned)
 - [Tools Used](#tools-used)
 - [License](#license)
@@ -190,12 +191,40 @@ In Phase 5, I added **branch prediction and speculative control logic** to allow
 
 ---
 
+## Phase 6: Instruction Wakeup + CDB Integration
+
+### ✅ Description
+
+In Phase 6, I integrated **Wakeup Logic** and **Common Data Bus (CDB)** broadcasting to enable dynamic tracking of operand readiness. Instructions waiting for operands now become issue-ready the moment their corresponding tags are broadcast on the CDB by execution units.
+
+This phase models the core of Tomasulo-style scheduling, where instructions wake up dynamically based on execution progress.
+
+### ✅ Module Structure
+
+- `Wakeup_Logic.v` — Compares operand tags with CDB broadcast and updates ready status.
+- `CDB_Broadcaster.v` — Signals destination physical register tags to wake up dependent instructions.
+- `Issue_Controller.v` — Checks readiness of operands using `Wakeup_Logic` and issues instructions when ready.
+- `Top_Phase6.v` — Top-level module wiring together CDB, wakeup, and issue logic.
+- `Testbench_Phase6.v` — Simulates operand readiness transitions via CDB and validates instruction wakeup.
+
+### ✅ Key Features
+
+- Source readiness dynamically determined by tag comparison with CDB.
+- Instructions issue only when both operands are ready.
+- Simulates broadcast from execution units and observes downstream instruction activation.
+- Realistic representation of out-of-order execution behavior.
+
+[🔗 Go to Phase 6 Code Folder](https://github.com/Srikar109755/RISC-V-Pipeline-Processor/tree/main/CPU_Phase6_Instruction_Wakeup_CDB_Integration)
+
+---
+
 ## Future Phases (Planned)
 
 | Phase    | Description                              | Status     |
 |----------|------------------------------------------|------------|
-| Phase 6  | Superscalar Out-of-Order CPU             | 🔜 Planned |
 | Phase 7  | Full Issue Queue + Multi-Issue Backend   | 🔜 Planned |
+| Phase 8  | Memory Disambiguation and Load-Store Queue | 🔜 Planned |
+| Phase 9  | Register Reclamation and Checkpointing   | 🔜 Planned |
 
 ---
 
