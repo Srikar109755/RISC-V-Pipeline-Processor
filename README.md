@@ -14,6 +14,7 @@ Welcome to my full Verilog-based CPU backend project. This repository tracks my 
 * [Phase 5: Branch Prediction and Speculative Control](#phase-5-branch-prediction-and-speculative-control)
 * [Phase 6: Instruction Wakeup + CDB Integration](#phase-6-instruction-wakeup--cdb-integration)
 * [Phase 7: Load-Store Queue and Memory Access](#phase-7-load-store-queue-and-memory-access)
+* [Phase 8: Exception Handling and Precise State Recovery](#phase-8-exception-handling-and-precise-state-recovery)
 * [Future Phases (Planned)](#future-phases-planned)
 * [Tools Used](#tools-used)
 * [License](#license)
@@ -60,7 +61,7 @@ This pipeline uses direct architectural registers without any renaming.
 * `Register_File.v`
 * `Execution_Unit_ALU.v`
 * `Memory.v`
-* `Top_Phase1.v` (top module)
+* `Top_Phase1.v`
 * `Testbench_Phase1.v`
 
 ### ✅ Testcases
@@ -82,15 +83,13 @@ In Phase 2, I introduced Register Renaming support, including:
 * Physical Register File (Actual register data storage)
 * Rename Logic (Full integration of renaming system)
 
-This phase forms the core of out-of-order backend rename stage.
-
 ### ✅ Module Structure
 
 * `Rename_Map_Table.v`
 * `Free_List.v`
 * `Physical_Register_File.v`
 * `Rename_Logic.v`
-* `Top_Phase2.v` (top integration)
+* `Top_Phase2.v`
 * `Testbench_Phase2.v`
 
 ### ✅ Key Features
@@ -237,20 +236,46 @@ In Phase 7, I implemented a **Load-Store Queue (LSQ)** and integrated it with an
 
 ---
 
+## Phase 8: Exception Handling and Precise State Recovery
+
+### ✅ Description
+
+In Phase 8, I implemented **exception handling and precise retirement control** to support recovery from invalid instructions or hardware faults. This ensures that the CPU can safely roll back to a known good state and handle traps correctly.
+
+### ✅ Module Structure
+
+* `Exception_Handler.v` – Detects exceptions and signals rollback and trap address  
+* `Trap_Vector_Table.v` – Maps exception causes to handler addresses  
+* `Precise_Retirement_Logic.v` – Ensures correct retirement behavior under exception  
+* `Top_Phase8.v` – Integrates exception control and retirement logic  
+* `Testbench_Phase8.v` – Verifies behavior through commit and exception scenarios  
+
+### ✅ Key Features
+
+* Generates trap PC and recover pointer upon exception detection  
+* Halts retirement logic during exceptional conditions  
+* Supports fixed trap address (or extendable to vector-based handling)  
+* Modular design to plug into existing ROB and Commit infrastructure  
+* Fully simulated with commit-before-exception and trap-redirection scenario  
+
+[🔗 Go to Phase 8 Code Folder](https://github.com/Srikar109755/RISC-V-Pipeline-Processor/tree/main/CPU_Phase8_Exception_Handling)
+
+---
+
 ## Future Phases (Planned)
 
-| Phase   | Description                                | Status     |
-| ------- | ------------------------------------------ | ---------- |
-| Phase 8 | Memory Disambiguation and Load-Store Queue | 🔜 Planned |
-| Phase 9 | Register Reclamation and Checkpointing     | 🔜 Planned |
+| Phase   | Description                                      | Status     |
+|-------- |--------------------------------------------------|------------|
+| Phase 9 | Register Reclamation and Checkpointing           | 🔜 Planned |
+| Phase 10| Dispatch Queue, Multi-Issue, and Scoreboarding   | 🔜 Planned |
 
 ---
 
 ## Tools Used
 
-* Language: Verilog HDL
-* Simulation: ModelSim / Vivado / Icarus Verilog
-* Version Control: Git / GitHub
+* Language: Verilog HDL  
+* Simulation: ModelSim / Vivado / Icarus Verilog  
+* Version Control: Git / GitHub  
 
 ---
 
