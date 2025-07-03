@@ -15,7 +15,6 @@ Welcome to my full Verilog-based CPU backend project. This repository tracks my 
 * [Phase 6: Instruction Wakeup + CDB Integration](#phase-6-instruction-wakeup--cdb-integration)
 * [Phase 7: Load-Store Queue and Memory Access](#phase-7-load-store-queue-and-memory-access)
 * [Phase 8: Exception Handling and Precise State Recovery](#phase-8-exception-handling-and-precise-state-recovery)
-* [Future Phases (Planned)](#future-phases-planned)
 * [Tools Used](#tools-used)
 * [License](#license)
 
@@ -259,15 +258,6 @@ In Phase 8, I implemented **exception handling and precise retirement control** 
 * Fully simulated with commit-before-exception and trap-redirection scenario  
 
 [🔗 Go to Phase 8 Code Folder](https://github.com/Srikar109755/RISC-V-Pipeline-Processor/tree/main/CPU_Phase8_Exception_Handling)
-
----
-
-## Future Phases (Planned)
-
-| Phase   | Description                                      | Status     |
-|-------- |--------------------------------------------------|------------|
-| Phase 9 | Register Reclamation and Checkpointing           | 🔜 Planned |
-| Phase 10| Dispatch Queue, Multi-Issue, and Scoreboarding   | 🔜 Planned |
 
 ---
 
