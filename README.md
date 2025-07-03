@@ -1,12 +1,14 @@
-# 🚀 CPU Rename Backend Design (Multi-Phase Project)
+# 🚀 Superscalar Out-of-Order CPU Backend Design
 
-Welcome to my full Verilog-based CPU backend project. This repository tracks my progressive design of a superscalar out-of-order CPU backend, starting from a simple pipeline and progressively adding more advanced features.
+Welcome to a comprehensive Verilog-based CPU backend design project. This multi-phase implementation builds a professional-grade Out-of-Order RISC-V processor pipeline, integrating components such as instruction fetch, decode, register renaming, dynamic scheduling, branch prediction, memory access, and exception handling.
+
+Each phase progressively introduces advanced architectural features to simulate the behavior of modern superscalar processors.
 
 ---
 
 ## 📁 Table of Contents
 
-* [Project Overview](#project-overview)
+* [Project Structure](#project-structure)
 * [Phase 1: Baseline Pipeline](#phase-1-baseline-pipeline)
 * [Phase 2: Rename Logic & Free List](#phase-2-rename-logic--free-list)
 * [Phase 3: Reservation Stations, Execution Unit, and CDB](#phase-3-reservation-stations-execution-unit-and-cdb)
@@ -20,21 +22,74 @@ Welcome to my full Verilog-based CPU backend project. This repository tracks my 
 
 ---
 
-## 🚀 Project Overview
+## 🗂 Project Structure
 
-This project simulates the backend pipeline stages of a CPU using Verilog HDL, starting from a basic 5-stage pipeline and incrementally adding:
-
-* Register renaming
-* Physical register file
-* Free list management
-* Reservation stations
-* Common Data Bus (CDB)
-* Reorder buffer with precise commit and recovery
-* Branch prediction and speculative control
-* Out-of-order execution model
-* Issue queue and recovery mechanisms (future phases)
-
-Each phase is stored in its own directory inside this repository.
+```bash
+CPU_Backend_Project/
+│
+├── CPU_Phase1_Baseline_Pipeline/
+│   ├── Instruction_Fetch.v
+│   ├── Instruction_Decode.v
+│   ├── Register_File.v
+│   ├── ALU_Execution_Unit.v
+│   ├── Memory.v
+│   ├── Top_Phase1.v
+│   └── Testbench_Phase1.v
+│
+├── CPU_Phase2_Register_Renaming/
+│   ├── Rename_Map_Table.v
+│   ├── Free_List.v
+│   ├── Physical_Register_File.v
+│   ├── Rename_Logic.v
+│   ├── Top_Phase2.v
+│   └── Testbench_Phase2.v
+│
+├── CPU_Phase3_Issue_Queue/
+│   ├── Reservation_Stations.v
+│   ├── Common_Data_Bus.v
+│   ├── ALU_Execution_Unit.v
+│   ├── Top_Phase3.v
+│   └── Testbench_Phase3.v
+│
+├── CPU_Phase4_Reorder_Buffer/
+│   ├── Reorder_Buffer.v
+│   ├── Commit_Unit.v
+│   ├── Recovery_Logic.v
+│   ├── Top_Phase4.v
+│   └── Testbench_Phase4.v
+│
+├── CPU_Phase5_Branch_Prediction/
+│   ├── Branch_Predictor.v
+│   ├── BTB.v
+│   ├── Speculation_Control.v
+│   ├── Top_Phase5.v
+│   └── Testbench_Phase5.v
+│
+├── CPU_Phase6_Instruction_Wakeup_CDB_Integration/
+│   ├── Wakeup_Logic.v
+│   ├── CDB_Broadcaster.v
+│   ├── Issue_Controller.v
+│   ├── Top_Phase6.v
+│   └── Testbench_Phase6.v
+│
+├── CPU_Phase7_Load_Store_Queue/
+│   ├── Address_Calculator.v
+│   ├── Load_Store_Queue.v
+│   ├── Memory_Access_Controller.v
+│   ├── Top_Phase7.v
+│   └── Testbench_Phase7.v
+│
+├── CPU_Phase8_Exception_Handling/
+│   ├── Exception_Handler.v
+│   ├── Trap_Vector_Table.v
+│   ├── Precise_Retirement_Logic.v
+│   ├── Top_Phase8.v
+│   └── Testbench_Phase8.v
+│
+├── Final_CPU_Top_Level/
+│   ├── Top_OoO_CPU.v
+│   └── TB_OoO_CPU.v
+```
 
 ---
 
