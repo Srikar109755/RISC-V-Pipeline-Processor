@@ -6,7 +6,7 @@ module TB_OoO_CPU;
     reg clk;
     reg reset;
 
-    // Instantiate the CPU
+    // Instantiating the Top_OoO_CPU
     Top_OoO_CPU dut (
         .clk(clk),
         .reset(reset)
@@ -60,7 +60,7 @@ module TB_OoO_CPU;
         $finish; // End simulation
     end
 
-    // Monitor key signals (optional, but very useful for debugging)
+    // Monitor key signals
     initial begin
         $monitor("Time: %0t | PC: %h, Instr: %h | Renamed Dest PRF: %d | Exec Result: %h | CDB Valid/Tag: %b/%d | Commit Addr/Data: %d/%h | Arch_x1: %h",
                  $time,
