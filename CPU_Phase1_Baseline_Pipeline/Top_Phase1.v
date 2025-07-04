@@ -40,7 +40,7 @@ module Top_Phase1( clk,
 
     // Register File
     Register_File RF( .clk(clk),
-                   .we(1'b1),                                           // always Write eenable is 1 for simple pipeline
+                   .we(1'b1),                                           // always Write enable is 1 for simple pipeline
                    .rs1(rs1),
                    .rs2(rs2),
                    .rd(rd),
