@@ -1,8 +1,6 @@
 # 🚀 Superscalar Out-of-Order CPU Backend Design
 
-Welcome to a comprehensive Verilog-based CPU backend design project. This multi-phase implementation builds a professional-grade Out-of-Order RISC-V processor pipeline, integrating components such as instruction fetch, decode, register renaming, dynamic scheduling, branch prediction, memory access, and exception handling.
-
-Each phase progressively introduces advanced architectural features to simulate the behavior of modern superscalar processors.
+Welcome to a Verilog-based CPU backend design project. This implementation builds a Out-of-Order RISC-V processor pipeline, integrating components such as instruction fetch, decode, register renaming, dynamic scheduling, branch prediction, memory access, and exception handling.
 
 ---
 
