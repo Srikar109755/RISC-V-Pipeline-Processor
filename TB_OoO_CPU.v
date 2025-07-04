@@ -69,10 +69,10 @@ module TB_OoO_CPU;
                  dut.rn_dest_phys_reg,
                  dut.alu_result,
                  dut.cdb_valid_to_rs,
-                 dut.cdb_tag_to_rs[5:0], // Monitoring the 6-bit tag
+                 dut.cdb_tag_to_rs[5:0],
                  dut.rf_write_addr,
                  dut.rf_write_data,
-                 dut.rf_debug_regfile_data[1*32 +: 32] // Monitor x1
+                 dut.rf_debug_regfile_data[1*32 +: 32]
                 );
     end
 
