@@ -87,8 +87,8 @@ CPU_Backend_Project/
 │   └── Testbench_Phase8.v
 │
 ├── Final_CPU_Top_Level/
-│   ├── Top_OoO_CPU.v
-│   └── TB_OoO_CPU.v
+    ├── Top_OoO_CPU.v
+    └── TB_OoO_CPU.v
 ```
 
 ---
