@@ -50,7 +50,7 @@ module Rename_Logic( clk,
         .allocate(allocate),
         .allocate_valid(rename_valid),
         .allocated_phys_reg(new_phys_reg),
-        .free_valid(1'b0),                                              // No freeing (Baisc Model)
+        .free_valid(1'b0),                                              // No freeing
         .free_phys_reg(6'b0)
     );
     
