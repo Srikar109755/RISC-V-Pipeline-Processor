@@ -1,14 +1,12 @@
 `timescale 1ns / 1ps
 
-// Top-level CPU module integrating the provided components
+// Top-level CPU module integrates all the phases
 module Top_OoO_CPU(
     input clk,
     input reset
 );
 
-    // -------------------------------------------------------------------------
-    // Wires and Registers for Inter-Module Communication
-    // -------------------------------------------------------------------------
+    // Wires and Registers for Inter-Module Communications
 
     // Instruction Fetch Stage Signals
     wire [31:0] if_instruction;
@@ -29,7 +27,7 @@ module Top_OoO_CPU(
     wire        rf_write_enable;
     wire [4:0]  rf_write_addr;
     wire [31:0] rf_write_data;
-    wire [32*32-1:0] rf_debug_regfile_data; // <-- UPDATED: Matches new Register_File port
+    wire [32*32-1:0] rf_debug_regfile_data; 
 
     // Rename Logic Signals
     wire [5:0] rn_src_phys_reg1;
@@ -50,7 +48,7 @@ module Top_OoO_CPU(
 
     // Reservation Stations Signals
     wire        rs_issue_valid;
-    wire [4:0]  rs_issue_opcode; // This is a simplified 5-bit opcode for ALU_Execution_Unit
+    wire [4:0]  rs_issue_opcode;     // This is a simple 5-bit opcode for ALU_Execution_Unit
     wire [5:0]  rs_issue_src1_prf;
     wire [5:0]  rs_issue_src2_prf;
     wire [5:0]  rs_issue_dest_prf;
@@ -92,7 +90,7 @@ module Top_OoO_CPU(
     // Precise Retirement Logic Signals
     wire        retire_enable;
 
-    // Internal pipeline registers (simplified for demonstration)
+    // Internal pipeline registers
     reg [31:0] pc_reg;
     reg [31:0] id_instruction_reg; // Instruction from IF to ID
     reg [4:0]  id_rd_addr_reg;     // Destination architectural register
@@ -101,8 +99,8 @@ module Top_OoO_CPU(
     reg [5:0]  ren_src1_prf_reg;    // src1 physical reg from rename to RS
     reg [5:0]  ren_src2_prf_reg;    // src2 physical reg from rename to RS
     reg [5:0]  ren_dest_prf_reg;    // dest physical reg from rename to RS
-    reg        ren_src1_ready_reg;  // src1 ready from PRF status (simplified)
-    reg        ren_src2_ready_reg;  // src2 ready from PRF status (simplified)
+    reg        ren_src1_ready_reg;  // src1 ready from PRF status 
+    reg        ren_src2_ready_reg;  // src2 ready from PRF status
     reg        ren_valid_reg;       // valid signal from rename to RS
 
     reg [4:0]  issue_opcode_reg;    // opcode from RS issue to ALU
@@ -116,7 +114,7 @@ module Top_OoO_CPU(
     reg        exec_done_reg;       // done signal from ALU to CDB Broadcaster
 
 
-    // Instantiate Modules
+    // Instantiating Modules
 
     // Phase 1 Modules
     Instruction_Fetch IF_Unit (
@@ -127,7 +125,7 @@ module Top_OoO_CPU(
     );
 
     Instruction_decode ID_Unit (
-        .instruction(id_instruction_reg), // Use pipeline register for instruction
+        .instruction(id_instruction_reg), // Pipeline register for instruction
         .rs1(id_rs1_addr),
         .rs2(id_rs2_addr),
         .rd(id_rd_addr),
@@ -144,10 +142,10 @@ module Top_OoO_CPU(
         .rs1(id_rs1_addr), // Used for reading in decode, but actual read is from PRF
         .rs2(id_rs2_addr), // Used for reading in decode, but actual read is from PRF
         .rd(rf_write_addr),
-        .rd1(), // Not used in this simplified model for direct pipeline reads
-        .rd2(), // Not used in this simplified model for direct pipeline reads
+        .rd1(), // Not using for now
+        .rd2(), // Not using for now
         .wd(rf_write_data),
-        .debug_regfile_data(rf_debug_regfile_data) // <-- UPDATED CONNECTION
+        .debug_regfile_data(rf_debug_regfile_data) 
     );
 
     // Phase 2 Modules
@@ -155,7 +153,7 @@ module Top_OoO_CPU(
     Rename_Logic RN_Unit (
         .clk(clk),
         .reset(reset),
-        .valid(if_pc > 0), // A simplistic valid signal for instruction coming into rename
+        .valid(if_pc > 0), // A simple valid signal for instruction coming into rename
         .src_arch_reg1(id_rs1_addr),
         .src_arch_reg2(id_rs2_addr),
         .dest_arch_reg(id_rd_addr),
@@ -180,14 +178,14 @@ module Top_OoO_CPU(
     // Phase 3 Modules
     // Using a simplified 5-bit opcode for ALU_Execution_Unit for ADD/SUB/MUL, etc.
     // Mapping full opcode to a simplified one for ALU.
-    reg [4:0] alu_exec_opcode_simplified; // Moved to reg as it's in an always block
+    reg [4:0] alu_exec_opcode_simplified;             // Moved to reg as it's in an always block
     always @(*) begin
         case(id_opcode_full)
             7'b0010011: begin // I-Type (ADDI, SLTI, etc.)
                 case (id_funct3)
                     3'b000: alu_exec_opcode_simplified = 5'b00001; // ADDI -> ADD
                     3'b010: alu_exec_opcode_simplified = 5'b00001; // SLTI -> ADD (Placeholder, needs proper SLT op)
-                    // ... add more I-type mappings as needed
+                    // ... More I-type mappings if needed
                     default: alu_exec_opcode_simplified = 5'b00000; // Default/Invalid
                 endcase
             end
@@ -195,7 +193,7 @@ module Top_OoO_CPU(
                 case ({id_funct7, id_funct3})
                     10'b0000000000: alu_exec_opcode_simplified = 5'b00001; // ADD
                     10'b0100000000: alu_exec_opcode_simplified = 5'b00010; // SUB
-                    // ... add more R-type mappings as needed
+                    // ... More R-type mappings if needed
                     default: alu_exec_opcode_simplified = 5'b00000;
                 endcase
             end
@@ -219,11 +217,9 @@ module Top_OoO_CPU(
         .clk(clk),
         .reset(reset),
         .broadcast_valid(cdb_valid_from_brdcstr),
-        .broadcast_tag(cdb_tag_from_brdcstr), // This is 6-bit
+        .broadcast_tag(cdb_tag_from_brdcstr), // 6-bit
         .cdb_valid(cdb_valid_to_rs),
-        .cdb_tag(cdb_tag_to_rs) // This is 32-bit, but should carry 6-bit tag.
-                                // The Common_Data_Bus module needs its cdb_tag output to be [5:0]
-                                // or you need to cast/pad here. Let's fix Common_Data_Bus module.
+        .cdb_tag(cdb_tag_to_rs) 
     );
 
     Reservation_Stations RS_Unit (
@@ -250,8 +246,8 @@ module Top_OoO_CPU(
         .clk(clk),
         .reset(reset),
         .commit_valid(retire_enable), // From Precise Retirement Logic
-        .commit_dest_arch(id_rd_addr_reg), // This should come from ROB/Commit Stage
-        .commit_value(exec_result_reg),     // This should come from ROB/Commit Stage
+        .commit_dest_arch(id_rd_addr_reg), // From ROB/Commit Stage
+        .commit_value(exec_result_reg),     // From ROB/Commit Stage
         .arch_wr_addr(rf_write_addr),
         .arch_wr_data(rf_write_data),
         .arch_wr_enable(rf_write_enable)
@@ -264,12 +260,11 @@ module Top_OoO_CPU(
         .branch_mispredict(1'b0), // Dummy for now
         .valid_head_ptr(4'b0),     // Dummy
         .correct_ptr(4'b0),        // Dummy
-        .recover(excp_recover),    // Connect to exception handler recover
-        .recover_ptr(excp_recover_rob_ptr) // Connect to exception handler recover ROB ptr
+        .recover(excp_recover),    // Connected to exception handler recover
+        .recover_ptr(excp_recover_rob_ptr) // Connected to exception handler recover ROB ptr
     );
 
     // Phase 5 Modules
-    // BTB and Branch_Predictor are typically used by Instruction Fetch or early pipeline stages
     BTB BTB_Unit (
         .clk(clk),
         .reset(reset),
@@ -297,7 +292,7 @@ module Top_OoO_CPU(
         .clk(clk),
         .reset(reset),
         .predicted_taken(bp_prediction),
-        .actual_valid(1'b0),  // Dummy (actual branch outcome needs to be provided)
+        .actual_valid(1'b0),  // Dummy
         .actual_taken(1'b0),  // Dummy
         .actual_target(32'b0),// Dummy
         .flush(spec_flush),
@@ -328,7 +323,7 @@ module Top_OoO_CPU(
     ) LSQ_Unit (
         .clk(clk),
         .reset(reset),
-        .ls_valid(1'b0), // Dummy (needs control signals)
+        .ls_valid(1'b0), // Dummy 
         .is_store(1'b0), // Dummy
         .opcode(5'b0),   // Dummy
         .addr(32'b0),    // Dummy
@@ -345,7 +340,7 @@ module Top_OoO_CPU(
         .mem_write(mem_we),
         .mem_read(~mem_we && lsq_load_ready), // Read when not writing and LSQ has a load ready
         .address(mem_addr),
-        .write_data(lsq_load_data), // Or actual data to write from pipeline
+        .write_data(lsq_load_data), // Actual data to write from pipeline
         .read_data(mem_rdata)
     );
 
@@ -355,7 +350,7 @@ module Top_OoO_CPU(
         .clk(clk),
         .reset(reset),
         .exception_occurred(1'b0), // Dummy (needs real exception signals)
-        .exception_pc(if_pc),      // Example: PC where exception occurred
+        .exception_pc(if_pc),      
         .recover(excp_recover),
         .recover_rob_ptr(excp_recover_rob_ptr),
         .trap_pc(excp_trap_pc)
@@ -364,14 +359,14 @@ module Top_OoO_CPU(
     Precise_Retirement_Logic PR_Logic (
         .clk(clk),
         .reset(reset),
-        .rob_commit_valid(alu_done), // Simplified: ALU done means ready to commit
-        .rob_commit_arch(id_rd_addr_reg), // Simplified: The architectural register being written
+        .rob_commit_valid(alu_done),     // ALU done means ready to commit
+        .rob_commit_arch(id_rd_addr_reg), // The architectural register being written
         .exception_detected(excp_recover), // If exception, disable retirement
         .retirement_enable(retire_enable)
     );
 
     Trap_Vector_Table TVT (
-        .cause(4'b0001), // Example: Illegal instruction
+        .cause(4'b0001), // Illegal instruction
         .handler_address(excp_trap_pc) // Connect to Exception Handler's trap_pc
     );
 
@@ -383,7 +378,7 @@ module Top_OoO_CPU(
             pc_reg <= 0;
             id_instruction_reg <= 0;
         end else begin
-            // Simplified PC increment. Branching/Jumping logic not fully integrated here.
+            // Simplified PC increment.
             // In a real system, PC would be updated by branch target, jump target, or next sequential PC.
             pc_reg <= if_pc; // IF_Unit already increments pc +4
             id_instruction_reg <= if_instruction;
@@ -391,7 +386,6 @@ module Top_OoO_CPU(
     end
 
     // ID/REN Pipeline Register
-    // Note: In a real design, this would be a decode-to-rename queue, not a simple register.
     always @(posedge clk or posedge reset) begin
         if (reset || spec_flush || excp_recover) begin
             id_rd_addr_reg <= 0;
@@ -404,18 +398,18 @@ module Top_OoO_CPU(
             ren_src2_ready_reg <= 0;
             ren_valid_reg <= 0;
         end else begin
-            // Pass decoded instruction fields to Rename Logic
+
             id_rd_addr_reg <= id_rd_addr; // Store architectural RD for commit
 
             // For Rename Logic inputs:
-            ren_opcode_reg <= id_opcode_full[4:0]; // Use simplified opcode for RS
-            ren_src1_prf_reg <= rn_src_phys_reg1; // These are from the Rename_Map_Table lookup
-            ren_src2_prf_reg <= rn_src_phys_reg2; // These are from the Rename_Map_Table lookup
+            ren_opcode_reg <= id_opcode_full[4:0]; // Uses simplified opcode for RS
+            ren_src1_prf_reg <= rn_src_phys_reg1; // from the Rename_Map_Table lookup
+            ren_src2_prf_reg <= rn_src_phys_reg2; // From the Rename_Map_Table lookup
             ren_dest_prf_reg <= rn_dest_phys_reg; // New physical register for destination
             ren_valid_reg <= rn_valid;            // Valid from rename indicating successful allocation
 
             // Source Ready: Simplified for now. In a real design, this would check the Future File/PRF status.
-            // For now, assume if the register is not the destination of a pending instruction on CDB, it's ready.
+            // For now, assuming if the register is not the destination of a pending instruction on CDB, it's ready.
             ren_src1_ready_reg <= 1'b1; // Dummy: In reality, check if src1_prf is ready in PRF
             ren_src2_ready_reg <= 1'b1; // Dummy: In reality, check if src2_prf is ready in PRF
 
@@ -463,8 +457,8 @@ module Top_OoO_CPU(
     // The architectural register to write to should come from the ROB when committing
     // For this simple example, we'll assume a direct mapping back from `id_rd_addr_reg` which is problematic in OOO.
     // In a real ROB, `rob_commit_arch` would carry this information from the ROB entry.
-    assign rf_write_addr = id_rd_addr_reg; // Simplified: Assumes instruction commits in order of ID
-    assign rf_write_data = exec_result_reg; // Simplified: Data comes directly from execution result
+    assign rf_write_addr = id_rd_addr_reg; // Assumes instruction commits in order of ID
+    assign rf_write_data = exec_result_reg; // Data comes directly from execution result
 
     // Free List Freeing (Actual implementation usually involves ROB informing Free List)
     // For demonstration, let's assume the *previous* physical register mapped to id_rd_addr_reg
@@ -477,10 +471,10 @@ module Top_OoO_CPU(
     assign mem_we = 1'b0; // Dummy for now
     assign mem_addr = 32'b0; // Dummy for now
 
-    // Connecting CDB_Bus output to Reservation_Stations inputs (already done)
-    // CDB_Bus has cdb_tag (32-bit), but broadcast_tag (input) is 6-bit. This is a mismatch.
+    // Connecting CDB_Bus output to Reservation_Stations inputs
+    // CDB_Bus has cdb_tag (32-bit), but broadcast_tag (input) is 6-bit, a mismatch.
     // Assuming cdb_tag_to_rs carries the 6-bit physical register tag.
     // The `cdb_tag` in `Common_Data_Bus` should ideally be `[5:0]` to match `broadcast_tag`.
     // Fixing `Common_Data_Bus` module's output port width.
-    assign cdb_tag_to_rs = {26'b0, cdb_tag_from_brdcstr}; // Pad 6-bit tag to 32-bit for `cdb_tag_to_rs`
+    assign cdb_tag_to_rs = {26'b0, cdb_tag_from_brdcstr}; // Padding 6-bit tag to 32-bit for `cdb_tag_to_rs`
 endmodule
