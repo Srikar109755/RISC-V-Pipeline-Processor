@@ -38,5 +38,5 @@ module Top_Phase8(
     );
     
     
-    // Trap_Vector_Table is instantiated where decoding of cause is needed
+    // Trap_Vector_Table can be instantiated if the decoding of cause is needed
 endmodule
